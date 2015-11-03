@@ -1,0 +1,99 @@
+/*
+ * snmpGetItemMeta.h
+ *
+ *  Created on: 26-12月-08
+ *      Author: root
+ */
+
+#ifndef SNMPGETITEMMETA_H_
+#define SNMPGETITEMMETA_H_
+#include "../base/base.h"
+#include "snmpvar.h"
+
+
+/*
+*功能:获取卡类型
+*@ status :in
+*@ outData :out
+*return 
+*/
+void getCardType(const CARD_STATUS status[],char *outData );
+/*
+*功能:获取卡类型
+*@ status :in
+*@ outData :out
+*return 
+*/
+void getStatistiesCardTypes(const CARD_STATUS status[],char *outData );
+/*
+*功能:获取灯状态
+*@ itemName :in
+*@ data :in out
+*return 
+*/
+void getLightStatus(const CARD_STATUS status[],char *outData );
+/*
+*功能:获取电源信息
+*@ itemName :in
+*@ data :in out
+*return 
+*/
+void getPowerInfo(const CARD_STATUS status[],char *outData);
+/*
+*功能:获取告警信息
+*@ itemName :in
+*@ data :in out
+*return 
+*/
+void getAlertInfo(const CARD_STATUS status[],char *outData);
+/*
+*功能:获取远端卡连接状态 
+*@ itemName :in
+*@ data :in out
+*return 
+*/
+void getRemoteConnStatus(const CARD_STATUS status,char *outData );
+/*
+*功能:获取远端信息
+*@ itemName :in
+*@ data :in out
+*return 
+*/
+void getRemoteInfo(const CARD_STATUS status[],char *outData);
+void getCardTypeByCategory(int typeId,char *type);
+/*
+*功能:获取上/下行的带宽M
+*@str1 :in 第一个字节
+*@str2 :in 第二个字节
+*return 结果
+*/
+int getRunRateM(char *str1,char *str2);
+/*
+*功能:获取上/下行的带宽K
+*@str :in 第一个字节
+*return 结果
+*/
+int getRunRateK(char *str);
+/*
+*功能:设置上/下行的带宽M
+*@conf2 :out ucCardConf[2]
+*@conf3 :out ucCardConf[3]
+*return 
+*/
+void setRunRateM(int rate,unsigned char *conf2,unsigned char *conf3);
+/*
+*功能:设置上/下行的带宽M
+*@rate :out 速率
+*@conf :out config[]
+*return
+*/
+void setRunRateK(int rate,unsigned char *conf);
+/*
+*功能：各类型板卡数量
+*@str :in
+*@sub :in
+*@result :out 输出结果
+*return 
+*/
+void getAmountOfCardType(char *str,char *sub,char *result);
+#endif /* SNMPGETITEMMETA_H_ */

@@ -1,0 +1,20 @@
+arm-linux-gcc  -O -c action/login.c -o action/login.o
+arm-linux-gcc  -O -c base/base.c -o base/base.o
+arm-linux-gcc  -O -c util/adstring.c -o util/adstring.o
+arm-linux-gcc  -O -c util/commonUtil.c -o util/commonUtil.o
+arm-linux-gcc  -O -c lib/cgic.c -o lib/cgic.o
+arm-linux-gcc  -O -c util/lockFile.c -o util/lockFile.o
+arm-linux-gcc  -O -c util/userUtil.c -o util/userUtil.o
+arm-linux-gcc  -O -c dao/userDao.c -o dao/userDao.o
+arm-linux-gcc  -O -c services/userServices.c -o services/userServices.o
+arm-linux-gcc  -O -c util/sessionUtil.c -o util/sessionUtil.o
+arm-linux-gcc  -O -c dao/sessionDao.c -o dao/sessionDao.o
+arm-linux-gcc  -O -c services/sessionServices.c -o services/sessionServices.o
+arm-linux-gcc  -O -o login.cgi action/login.o base/base.o util/adstring.o util/commonUtil.o lib/cgic.o util/lockFile.o util/userUtil.o dao/userDao.o services/userServices.o util/sessionUtil.o dao/sessionDao.o services/sessionServices.o -lm 
+arm-linux-gcc  -O -c action/checkLogin.c -o action/checkLogin.o
+arm-linux-gcc  -O -o checkLogin.cgi action/checkLogin.o base/base.o util/adstring.o util/commonUtil.o lib/cgic.o util/lockFile.o util/sessionUtil.o dao/sessionDao.o services/sessionServices.o -lm 
+arm-linux-gcc  -O -c action/loginOut.c -o action/loginOut.o
+arm-linux-gcc  -O -o loginOut.cgi action/loginOut.o base/base.o util/adstring.o util/commonUtil.o lib/cgic.o util/lockFile.o util/sessionUtil.o dao/sessionDao.o services/sessionServices.o -lm 
+arm-linux-gcc  -O -c services/authorityServices.c -o services/authorityServices.o
+arm-linux-gcc  -O -o upload.cgi action/upload.c lib/cgic.o base/base.o util/adstring.o util/commonUtil.o util/lockFile.o util/sessionUtil.o dao/sessionDao.o services/sessionServices.o util/userUtil.o dao/userDao.o services/userServices.o services/authorityServices.o	
+arm-linux-gcc  -O -o progress.cgi action/progress.c lib/cgic.o base/base.o util/adstring.o util/commonUtil.o util/lockFile.o util/sessionUtil.o dao/sessionDao.o services/sessionServices.o util/userUtil.o dao/userDao.o services/userServices.o services/authorityServices.o	

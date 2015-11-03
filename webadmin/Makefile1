@@ -1,0 +1,218 @@
+############################################################
+#
+#要生成的所有CGI文件
+#分别为:
+#用户登录
+#验证用户登录
+#退出系统
+#读取用户信息
+#设置用户信息
+#读取运行日志
+#读取操作日志
+#读取告警信息
+#设置硬件配置
+#读取硬件配置
+#GB2312编码
+############################################################
+all: login.cgi \
+	  checkLogin.cgi \
+	  loginOut.cgi \
+	  getUserAction.cgi \
+	  setUserAction.cgi \
+	  loginLogAction.cgi \
+	  setupLogAction.cgi \
+	  getAlertAction.cgi \
+	  setAlertAction.cgi \
+	  setConfig.cgi \
+	  getConfig.cgi \
+	  code.cgi		\
+	  upload.cgi	\
+	  backup.cgi
+############################################################
+#
+#编译参数
+#
+############################################################
+#编译器
+#CC = gcc
+CC = /usr/local/arm/3.3.2/bin/arm-linux-gcc
+#编译参数
+#CFLAGS = -O -Wall 
+CFLAGS = -O
+#引用库
+CLIBS = -lm
+
+
+
+############################################################
+#
+#目标文件,根据功能划分为8个模块
+#
+############################################################
+#用户信息目标文件
+USEROBJS   =  util/userUtil.o \
+			 	  dao/userDao.o \
+			 	  services/userServices.o 
+#会话信息目标文件
+SESSIONOBJS = util/sessionUtil.o \
+				  dao/sessionDao.o \
+				  services/sessionServices.o
+#共用模块目标文件
+COMMONOBJS =  base/base.o \
+				  util/adstring.o \
+				  util/sysvar.o \
+				  util/commonUtil.o \
+				  lib/cgic.o \
+				  util/lockFile.o
+#硬件存取目标文件
+CARDOBJS =    services/snmpServices.o \
+			  	  card/snmpGetServices.o \
+			     card/snmpGetItemServices.o \
+			     card/snmpGetItemUtil.o \
+			     card/snmpGetItemMeta.o \
+			     card/snmpMeta.o card/snmpUtil.o \
+			     card/snmpSetServices.o \
+			     card/snmpSetUtil.o \
+			     card/snmpSetMeta.o \
+			     card/snmpSetItemServices.o \
+			     card/snmpSetItemUtil.o \
+			     card/snmpSetItemMeta.o \
+			     card/snmpvar.o
+#日志信息目标文件
+LOGOBJS =     util/syslogUtil.o \
+			     dao/syslogDao.o \
+			     services/syslogServices.o
+#告警信息目标文件
+ALERTOBJS =   util/alertUtil.o \
+				  dao/alertDao.o \
+				  services/alertServices.o
+#权限管理目标文件
+AUTHORITYOBJS = services/authorityServices.o
+#分页信息目标文件
+PAGEOBJS =    util/pageUtil.o
+
+############################################################
+#
+#生成CGI
+#
+############################################################
+
+login.cgi: 	action/login.o \
+				${COMMONOBJS} \
+				${USEROBJS} \
+				${SESSIONOBJS} \
+				${LOGOBJS} \
+				${PAGEOBJS}
+	${CC} ${CFLAGS} -o $@ $^ ${CLIBS} 
+checkLogin.cgi:action/checkLogin.o \
+				${COMMONOBJS} \
+				${SESSIONOBJS}
+	${CC} ${CFLAGS} -o $@ $^ ${CLIBS} 
+loginOut.cgi:action/loginOut.o \
+				${COMMONOBJS} \
+				${SESSIONOBJS} \
+				${LOGOBJS} \
+				${PAGEOBJS} \
+				${USEROBJS}
+	${CC} ${CFLAGS} -o $@ $^ ${CLIBS} 
+setConfig.cgi: action/setConfig.o \
+				${COMMONOBJS} \
+				${SESSIONOBJS} \
+				${LOGOBJS} \
+				${PAGEOBJS} \
+				${USEROBJS} \
+				${CARDOBJS} \
+				${AUTHORITYOBJS}
+	${CC} ${CFLAGS} -o $@ $^ ${CLIBS} 
+getConfig.cgi: action/getConfig.o \
+				${COMMONOBJS} \
+				${SESSIONOBJS} \
+				${CARDOBJS}
+	${CC} ${CFLAGS} -o $@ $^ ${CLIBS} 
+getUserAction.cgi: action/getUserAction.o \
+				${COMMONOBJS} \
+				${SESSIONOBJS} \
+				${AUTHORITYOBJS} \
+				${PAGEOBJS} \
+				${USEROBJS}
+	${CC} ${CFLAGS} -o $@ $^ ${CLIBS} 
+setUserAction.cgi: action/setUserAction.o \
+				${COMMONOBJS} \
+				${SESSIONOBJS} \
+				${AUTHORITYOBJS} \
+				${LOGOBJS} \
+				${PAGEOBJS} \
+				${USEROBJS}
+	${CC} ${CFLAGS} -o $@ $^ ${CLIBS} 
+loginLogAction.cgi: action/loginLogAction.o \
+				${COMMONOBJS} \
+				${SESSIONOBJS} \
+				${LOGOBJS} \
+				${PAGEOBJS} \
+				${USEROBJS} 
+	${CC} ${CFLAGS} -o $@ $^ ${CLIBS} 
+setupLogAction.cgi: action/setupLogAction.o \
+				${COMMONOBJS} \
+				${SESSIONOBJS} \
+				${LOGOBJS} \
+				${PAGEOBJS} \
+				${USEROBJS} 
+	${CC} ${CFLAGS} -o $@ $^ ${CLIBS} 
+getAlertAction.cgi: action/getAlertAction.o \
+				${COMMONOBJS} \
+				${SESSIONOBJS} \
+				${ALERTOBJS} \
+				${PAGEOBJS} \
+				${USEROBJS}
+	${CC} ${CFLAGS} -o $@ $^ ${CLIBS} 
+setAlertAction.cgi: action/setAlertAction.o \
+				${COMMONOBJS} \
+				${SESSIONOBJS} \
+				${AUTHORITYOBJS} \
+				${LOGOBJS} \
+				${PAGEOBJS} \
+				${ALERTOBJS} \
+				${USEROBJS}
+	${CC} ${CFLAGS} -o $@ $^ ${CLIBS} 
+code.cgi: action/code.c lib/cgic.o
+	${CC} ${CFLAGS} -o $@ $^
+upload.cgi: action/upload.c lib/cgic.o \
+				${COMMONOBJS}	\
+				${SESSIONOBJS} \
+				${LOGOBJS} \
+				${PAGEOBJS} \
+				${USEROBJS} \
+				${AUTHORITYOBJS}
+	${CC} ${CFLAGS} -o $@ $^	
+backup.cgi: action/backup.c lib/cgic.o \
+				${COMMONOBJS} \
+				${SESSIONOBJS} \
+				${LOGOBJS} \
+				${PAGEOBJS} \
+				${USEROBJS} \
+				${AUTHORITYOBJS}
+	${CC} ${CFLAGS} -o $@ $^	
+############################################################
+#
+#编译隐式规则
+#
+############################################################
+%.o:%.c
+	${CC} ${CFLAGS} -c $< -o $@
+############################################################
+#
+#删除目标文件
+#
+############################################################
+clean:
+	rm -f ./*.cgi \
+			action/*.o \
+			${COMMONOBJS} \
+			${USEROBJS} \
+			${SESSIONOBJS} \
+			${LOGOBJS} \
+			${PAGEOBJS} \
+	 		${ALERTOBJS} \
+	 		${AUTHORITYOBJS} \
+	 		${CARDOBJS} 
+

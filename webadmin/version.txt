@@ -1,0 +1,8 @@
+2015-9-14
+1. 移动测试归档版基础之上，新增：getBinFiles.cgi
+
+//CPE 获取文件Cgi使用示例
+http://192.168.0.193/cgi-bin/webadmin/getBinFiles.cgi?emId=193&fileName=age_time.bin
+
+返回结果：
+szHexBuffer=0A000000EE05000000
